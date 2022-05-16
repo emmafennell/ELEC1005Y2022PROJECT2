@@ -182,7 +182,21 @@ class Game:
         return end
     
     def blit_score(self, color, screen):
-        font = pygame.font.SysFont(None, 25)
+
+        # changed font and color to make scores clearer
+        font = pygame.font.SysFont("Times New Roman", 25, True, True)
         text = font.render('Score: ' + str(self.snake.score), True, color)
         screen.blit(text, (0, 0))
+
+
+    # explain the rules to play this game
+    def how_to_play(self, color, screen):
+        font = pygame.font.SysFont("Times New Roman", 19, True)
+        text1 = font.render('Move: press up/down/left/right or w/s/a/d', True, color)
+        text2 = font.render('Score: successfully eat food', True, color)
+        text3 = font.render('Death: snake eats itself or knock into the boarder', True, color)
+        screen.blit(text1, (0, 60))
+        screen.blit(text2, (0, 160))
+        screen.blit(text3, (0, 260))
+
 

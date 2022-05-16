@@ -34,7 +34,6 @@ pygame.display.set_caption('Gluttonous')
 
 crash_sound = pygame.mixer.Sound('./sound/crash.wav')
 
-
 def text_objects(text, font, color=black):
     text_surface = font.render(text, True, color)
     return text_surface, text_surface.get_rect()
@@ -58,6 +57,7 @@ def button(msg, x, y, w, h, inactive_color, active_color, action=None, parameter
                 action(parameter)
             else:
                 action()
+
     else:
         pygame.draw.rect(screen, inactive_color, (x, y, w, h))
 
@@ -72,10 +72,22 @@ def quitgame():
     quit()
 
 
+# tell players how to play the game
+def how_to_play():
+    screen.fill(black)
+    game.how_to_play(white, screen)
+    pygame.display.update()
+    pygame.time.Clock().tick(15)
+    time.sleep(5)
+
+
+# directly show "crashed" rather than showing other objects in the meantime
 def crash():
     pygame.mixer.Sound.play(crash_sound)
-    message_display('crashed', game.settings.width / 2 * 15, game.settings.height / 3 * 15, white)
-    time.sleep(1)
+    screen.fill(black)
+    message_display('crashed', game.settings.width / 2 * 15, game.settings.height / 3 * 15, bright_red)
+    pygame.display.update()
+    time.sleep(2)
 
 
 def initial_interface():
@@ -89,8 +101,11 @@ def initial_interface():
         screen.fill(white)
         message_display('Gluttonous', game.settings.width / 2 * 15, game.settings.height / 4 * 15)
 
-        button('Go!', 80, 240, 80, 40, green, bright_green, game_loop, 'human')
-        button('Quit', 270, 240, 80, 40, red, bright_red, quitgame)
+        button('Play!', 60, 240, 80, 40, green, bright_green, game_loop, 'human')
+        button('Quit?', 160, 240, 80, 40, red, bright_red, quitgame)
+
+        # add one button which let players see the score rank
+        button('How?', 260, 240, 80, 40, blue, bright_blue, how_to_play)
 
         pygame.display.update()
         pygame.time.Clock().tick(15)
@@ -108,11 +123,13 @@ def game_loop(player, fps=10):
 
         game.do_move(move)
 
-        screen.fill(black)
+        # original color was black, which could not let players see clearly
+        # so, we changed black to white
+        screen.fill(white)
 
         game.snake.blit(rect_len, screen)
         game.strawberry.blit(screen)
-        game.blit_score(white, screen)
+        game.blit_score(bright_red, screen)
 
         pygame.display.flip()
 
