@@ -201,7 +201,12 @@ class Game:
 
     # show scores in a leaderboard
     def show_scores(self, color, screen, scores):
-        font = pygame.font.SysFont("Times New Roman", 20, True)
-        for i in range(0, len(scores)):
-            text = font.render("Rank " + str(i) + ": " + str(scores[i]), True, color)
-            screen.blit(text, (0, 0 + i * 20))
+        if len(scores) == 0:
+            font = pygame.font.SysFont("Times New Roman", 30, True)
+            text = font.render("Nothing to report", True, color)
+            screen.blit(text, (110, 180))
+        else:
+            font = pygame.font.SysFont("Times New Roman", 20, True)
+            for i in range(0, len(scores)):
+                text = font.render("Rank " + str(i) + ": " + str(scores[i]), True, color)
+                screen.blit(text, (0, 0 + i * 20))
