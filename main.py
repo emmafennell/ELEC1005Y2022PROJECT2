@@ -96,7 +96,9 @@ def crash():
     scores.append(game.snake.score)
     pygame.mixer.Sound.play(crash_sound)
     screen.fill(black)
-    message_display('crashed', game.settings.width / 2 * 15, game.settings.height / 3 * 15, bright_red)
+    message_display('Crashed', game.settings.width / 2 * 15, game.settings.height / 3 * 15, bright_red)
+    message_display("Scores: " + str(game.snake.score),
+                    game.settings.width / 2 * 15, game.settings.height / 3 * 15 + 100, white)
     time.sleep(2)
 
 
