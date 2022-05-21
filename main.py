@@ -34,6 +34,8 @@ pygame.display.set_caption('Gluttonous')
 
 crash_sound = pygame.mixer.Sound('./sound/crash.wav')
 
+scores = []
+
 def text_objects(text, font, color=black):
     text_surface = font.render(text, True, color)
     return text_surface, text_surface.get_rect()
@@ -80,20 +82,27 @@ def how_to_play():
     pygame.time.Clock().tick(15)
     time.sleep(5)
 
+# show scores in a leaderboard
+def show_scores():
+    scores.sort(reverse = True)
+    screen.fill(black)
+    game.show_scores(white, screen, scores)
+    pygame.display.update()
+    pygame.time.Clock().tick(15)
+    time.sleep(5)
 
 # directly show "crashed" rather than showing other objects in the meantime
 def crash():
+    scores.append(game.snake.score)
     pygame.mixer.Sound.play(crash_sound)
     screen.fill(black)
     message_display('crashed', game.settings.width / 2 * 15, game.settings.height / 3 * 15, bright_red)
-    pygame.display.update()
     time.sleep(2)
 
 
 def initial_interface():
     intro = True
     while intro:
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -101,11 +110,14 @@ def initial_interface():
         screen.fill(white)
         message_display('Gluttonous', game.settings.width / 2 * 15, game.settings.height / 4 * 15)
 
-        button('Play!', 60, 240, 80, 40, green, bright_green, game_loop, 'human')
-        button('Quit?', 160, 240, 80, 40, red, bright_red, quitgame)
+        button('Play!', 30, 240, 80, 40, green, bright_green, game_loop, 'human')
+        button('Quit?', 300, 240, 80, 40, red, bright_red, quitgame)
 
         # add one button which let players see the score rank
-        button('How?', 260, 240, 80, 40, blue, bright_blue, how_to_play)
+        button('How?', 120, 240, 80, 40, blue, bright_blue, how_to_play)
+
+        # add one button which can show the scores in a leaderboard
+        button('Scores#', 210, 240, 80, 40, yellow, bright_yellow, show_scores)
 
         pygame.display.update()
         pygame.time.Clock().tick(15)

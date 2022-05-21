@@ -199,4 +199,9 @@ class Game:
         screen.blit(text2, (0, 160))
         screen.blit(text3, (0, 260))
 
-
+    # show scores in a leaderboard
+    def show_scores(self, color, screen, scores):
+        font = pygame.font.SysFont("Times New Roman", 20, True)
+        for i in range(0, len(scores)):
+            text = font.render("Rank " + str(i) + ": " + str(scores[i]), True, color)
+            screen.blit(text, (0, 0 + i * 20))
